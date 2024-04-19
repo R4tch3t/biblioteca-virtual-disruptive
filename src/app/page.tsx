@@ -1,10 +1,7 @@
 "use client";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import Singup from "./components/singup";
 import Login from "./components/login";
-import { cookies } from 'next/headers'
 import { useCookies } from "react-cookie";
 import Boilerplate from "./components/boilerplate";
 
