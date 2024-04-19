@@ -35,12 +35,13 @@ const Boilerplate = () => {
           },
         });  
         response.then(()=>{
-            let wsURL = "localhost:3005"
+            let wsURL = `ws://localhost:3005/api/websocket`
             if(process.env.NODE_ENV==='production'){
                 //wsURL = process?.env?.WS_URL!
                 wsURL = "biblioteca-virtual-disruptive.vercel.app:3005"
+                wsURL = `wss://${wsURL}/api/websocket`
             }
-            const ws = new WebSocket(`ws://${wsURL}/api/websocket`);
+            const ws = new WebSocket(wsURL);
         
             ws.onopen = () => {
                 console.log('WebSocket connected');
