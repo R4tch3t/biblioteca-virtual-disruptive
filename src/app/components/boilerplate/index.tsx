@@ -37,7 +37,8 @@ const Boilerplate = () => {
         response.then(()=>{
             let wsURL = "localhost:3005"
             if(process.env.NODE_ENV==='production'){
-                wsURL = process?.env?.WS_URL!
+                //wsURL = process?.env?.WS_URL!
+                wsURL = "biblioteca-virtual-disruptive.vercel.app:3005"
             }
             const ws = new WebSocket(`ws://${wsURL}/api/websocket`);
         
