@@ -12,6 +12,7 @@ export default function Home() {
   const [loading, setLoading] = useState(true)
   const [role, setRole] = useState(0)
   
+  
 
   const closeSession = () => {
     removeCookie('email')

@@ -203,10 +203,6 @@ const NewCategoryComponent = ({category}: PROPS) => {
                         {category?.description!}
                       </p>
                     </div>
-                    <div  > {/* here scrollvie for content by user */}
-                      
-                      
-                    </div>
                     <div>
 
                       {category.allowData[0]&&
@@ -255,7 +251,7 @@ const NewCategoryComponent = ({category}: PROPS) => {
                           <input type="file" id="txtInput" accept=".txt" onChange={handleTxtChange} />
                           <br></br>
                           {plainText && (                            
-                            <textarea onChange={handleChangeTextArea} value={plainText} style={{width: '100%'}} >  </textarea>
+                            <textarea onChange={handleChangeTextArea} value={plainText} style={{width: '100%', color: 'black'}} >  </textarea>
                           )}
                         </div>
                       }

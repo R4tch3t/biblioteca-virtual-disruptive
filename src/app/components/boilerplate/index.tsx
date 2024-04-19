@@ -3,13 +3,14 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import Search from "../search";
-
+let staticsG = {}
 const Boilerplate = () => {
     const [cookies, setCookie, removeCookie] = useCookies(['email', 'userName', 'isReader', 'isCreator' , 'isAdmin', 'remember']);
     const [role, setRole] = useState(-1)
     const [messageForRole, setMessageForRole] = useState('Crea una cuenta para acceder al contenido.')
     const [categories, setCategories] = useState([])
-    
+    const [statics, setStatics]:any = useState({})
+
     useEffect(()=>{
         if(cookies.isAdmin){
             setRole(1)
@@ -24,6 +25,38 @@ const Boilerplate = () => {
             setMessageForRole('Ya que eres lector sólo podrás leer categorías')
         }
     },[cookies])
+
+    useEffect(()=>{
+        // Fetching for connect the mongodb stream and websocket
+        const response = fetch('/api/websocket',{
+          method: 'POST',
+          headers: {
+              'Content-Type': 'application/json'
+          },
+        });  
+        response.then(()=>{
+            let wsURL = "localhost:3005"
+            if(process.env.NODE_ENV==='production'){
+                wsURL = process?.env?.WS_URL!
+            }
+            const ws = new WebSocket(`ws://${wsURL}/api/websocket`);
+        
+            ws.onopen = () => {
+                console.log('WebSocket connected');
+            };
+        
+            //wetting statics from mongoDB
+            ws.onmessage = (event) => {            
+                const parsed = JSON.parse(event.data)
+                staticsG={...staticsG, ...parsed}
+                setStatics(staticsG)
+            };
+        
+            ws.onclose = () => {
+                console.log('WebSocket disconnected');
+            };
+        })
+      },[])
 
     const renderData = async() => {
         const data = { }
@@ -115,7 +148,7 @@ const Boilerplate = () => {
                                             {role !== -1 &&
                                                 <div className="flex gap-3 -mb-8 py-4 border-t border-gray-200 dark:border-gray-800">
                                                     <Link href={`/library/${category.name}`} download="/" className="group rounded-xl disabled:border *:select-none [&>*:not(.sr-only)]:relative *:disabled:opacity-20 disabled:text-gray-950 disabled:border-gray-200 disabled:bg-gray-100 dark:disabled:border-gray-800/50 disabled:dark:bg-gray-900 dark:*:disabled:!text-white text-gray-950 bg-gray-100 hover:bg-gray-200/75 active:bg-gray-100 dark:text-white dark:bg-gray-500/10 dark:hover:bg-gray-500/15 dark:active:bg-gray-500/10 flex gap-1.5 items-center text-sm h-8 px-3.5 justify-center">
-                                                        <span style={{color: 'blue'}} >Ver</span>                                                    
+                                                        <span style={{color: 'green'}} >Ver</span>                                                    
                                                     </Link>
 
                                                     {role===1 && 
@@ -131,6 +164,14 @@ const Boilerplate = () => {
 
                                                 </div>
                                             }
+
+                                            <div style={{marginTop: 25}}>
+                                                <span >Videos: </span><span className="font-bold">{statics[category.name]?.videos?statics[category.name]?.videos:0}</span>
+                                                <span style={{marginLeft: 15}} >Imagenes: </span><span className="font-bold">{statics[category.name]?.images?statics[category.name]?.images:0}</span>
+                                                <span style={{marginLeft: 15}} >Textos: </span><span className="font-bold">{statics[category.name]?.texts?statics[category.name]?.texts:0}</span>
+                                            </div>
+
+                                            
                                             
                                         </div>
                                     </div>
