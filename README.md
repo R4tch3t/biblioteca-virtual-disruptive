@@ -80,6 +80,6 @@ La base de datos, en MongoDB esta estructurada de la siquiente forma, Database y
     - [library.category.name]: userName: string, video?: string, image?: base64, plainText?: string
 
 ## NOTA: 
-    Se subio un directorio server, donde se implementa la API con express si es necesario implementarlo en un servidor diferente, 
-    pero solo haciendo el build a este proyecto de Next es posible hacer todas las funciones que se requieren en esta prueba    
+    Se subió un directorio server, donde se implementa la API con express sí es necesario implementarlo en un servidor diferente, 
+    pero sólo haciendo el build a este proyecto de Next es posible hacer todas las funciones que se requieren en esta prueba    
     técnica
