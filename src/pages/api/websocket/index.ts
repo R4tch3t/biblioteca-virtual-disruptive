@@ -8,7 +8,7 @@ export const config = {
 };
 
 const WebSocket = require('ws');
-const wss = new WebSocket.Server({ port: 3005 });
+const wss = new WebSocket.Server({ port: 8080 });
 const uri = `mongodb+srv://disruptive-test:${process.env.PASSWORD_DB}@cluster0.tnwsbpy.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 // Create a new MongoClient
@@ -68,7 +68,7 @@ export default async function handler(
                 videos = existsVideo.length;
                 images = existsImage.length;
                 texts = existsText.length;
-                
+
                 ws.send(JSON.stringify({[category.name]: {videos, images, texts}}));
             });
 
